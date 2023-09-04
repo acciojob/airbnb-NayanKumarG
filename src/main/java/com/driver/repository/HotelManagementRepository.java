@@ -20,7 +20,7 @@ public class HotelManagementRepository {
     HashMap<String , Booking> bookingdb = new HashMap<>();
 
     public boolean addHotel(Hotel hotel) {
-        if(hoteldb.containsKey(hotel.getHotelName())) return false;
+        if(hoteldb.getOrDefault(hotel.getHotelName(),null)!=null) return false;
         hoteldb.put(hotel.getHotelName(), hotel);
         return true;
     }
