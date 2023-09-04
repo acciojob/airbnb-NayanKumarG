@@ -8,10 +8,9 @@ import com.driver.repository.HotelManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
+import static org.apache.coyote.http11.Constants.a;
 
 @Service
 public class HotelManagementService {
@@ -30,18 +29,42 @@ public class HotelManagementService {
         return adharno;
     }
 
-    public List<String> getHotelWithMostFacilities() {
+    public String getHotelWithMostFacilities() {
         List<Hotel> listofhotels = hotelManagementRepository.getHotelWithMostFacilities();
         List<String> hotels = new ArrayList<>();
-        if(listofhotels.size()==0) return hotels;
+        List<Hotel> checklist = new ArrayList<>();
+        if(listofhotels.size()==0) return "";
         for(Hotel hotel:listofhotels)
         {
             List<Facility> facility = hotel.getFacilities();
-            if(facility.size()!=0) hotels.add(hotel.getHotelName());
+            if(facility.size()!=0)
+            {
+                checklist.add(hotel);
+//                hotels.add(hotel.getHotelName());
+            }
         }
+        if(checklist.size()==0) return "";
+        Collections.sort(checklist , new Comparator<Hotel>() {
+            @Override
+            public int compare(Hotel a, Hotel b) {
+                return Integer.compare(a.getFacilities().size(), b.getFacilities().size());
+            }
+        });
 
-        Collections.sort(hotels);
-        return hotels;
+        String listofhotelsname = "";
+        int count = 1;
+        listofhotelsname+=checklist.get(0).getHotelName();
+        for(int i=1 ; i<checklist.size() ; i++)
+        {
+            if(checklist.get(i).getFacilities().size()==checklist.get(i-1).getFacilities().size())
+            {
+                listofhotelsname+=checklist.get(i).getHotelName();
+            }
+            else break;
+        }
+//        Collections.sort(hotels);
+//        return hotels;
+        return listofhotelsname;
     }
 
     public int bookARoom(Booking booking) {
