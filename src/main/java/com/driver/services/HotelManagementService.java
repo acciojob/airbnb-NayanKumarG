@@ -18,7 +18,7 @@ public class HotelManagementService {
 //    @Autowired
     HotelManagementRepository hotelManagementRepository = new HotelManagementRepository();
     public boolean addHotel(Hotel hotel) {
-        if(hotel.getHotelName().equals(null) || hotel.getHotelName()==null || hotel==null) return false;
+        if(hotel.getHotelName().equals(null) || hotel.getHotelName()==null || hotel.equals(null)) return false;
         else return hotelManagementRepository.addHotel(hotel);
     }
 
