@@ -61,4 +61,17 @@ public class HotelManagementService {
     public int getBookings(Integer aadharCard) {
         return hotelManagementRepository.getBookings(aadharCard);
     }
+
+    public Hotel updateFacilities(List<Facility> newFacilities, String hotelName) {
+        Hotel hotel = hotelManagementRepository.getHotel(hotelName);
+        List<Facility> available = hotel.getFacilities();
+        newFacilities.removeAll(Collections.singleton(available.retainAll(newFacilities)));
+        for(Facility facility:newFacilities)
+        {
+            available.add(facility);
+        }
+        hotel.setFacilities(available);
+        return hotel;
+
+    }
 }

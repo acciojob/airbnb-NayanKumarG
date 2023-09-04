@@ -55,4 +55,8 @@ public class HotelManagementRepository {
         }
         return count;
     }
+
+    public Hotel getHotel(String hotelName) {
+        return hoteldb.get(hotelName);
+    }
 }
