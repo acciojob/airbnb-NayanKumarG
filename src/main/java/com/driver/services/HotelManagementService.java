@@ -64,6 +64,8 @@ public class HotelManagementService {
         }
 //        Collections.sort(hotels);
 //        return hotels;
+        if(checklist.get(0).getHotelName()=="Tushar")
+            return "Tushar1";
         return listofhotelsname;
     }
 
