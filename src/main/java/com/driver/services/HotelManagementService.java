@@ -1,5 +1,6 @@
 package com.driver.services;
 
+import com.driver.model.Booking;
 import com.driver.model.Facility;
 import com.driver.model.Hotel;
 import com.driver.model.User;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class HotelManagementService {
@@ -40,5 +42,23 @@ public class HotelManagementService {
 
         Collections.sort(hotels);
         return hotels;
+    }
+
+    public int bookARoom(Booking booking) {
+        Hotel hotel = hotelManagementRepository.bookARoom(booking);
+        int availablerooms = hotel.getAvailableRooms();
+        if(booking.getNoOfRooms()>availablerooms) return -1;
+        int amountpernight = hotel.getPricePerNight();
+        int amounttobepaid = booking.getNoOfRooms()*amountpernight;
+        UUID uuid = UUID.randomUUID();
+        String bookingId = String.valueOf(uuid);
+        booking.setBookingId(bookingId);
+        booking.setAmountToBePaid(amounttobepaid);
+        hotelManagementRepository.addBooking(booking);
+        return amounttobepaid;
+    }
+
+    public int getBookings(Integer aadharCard) {
+        return hotelManagementRepository.getBookings(aadharCard);
     }
 }
